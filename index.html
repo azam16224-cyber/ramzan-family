@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramzan Family</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(#0f2027,#203a43,#2c5364);
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+h1{margin-top:20px;}
+
+.section{
+    background: rgba(255,255,255,0.1);
+    padding:20px;
+    border-radius:15px;
+    margin:25px 0;
+}
+
+
+
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#ffd369;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+.result{
+    margin-top:15px;
+    font-size:18px;
+    min-height:40px;
+}
+
+.dontContainer{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:20px;
+    margin-top:15px;
+    flex-wrap:wrap;
+}
+.hadithResult{
+    font-size:20px;
+    line-height:1.6;
+    font-style:italic;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<h1>🌙 Ramzan Mubarak Family</h1>
+
+<div class="section">
+<h2>Allah's Beautiful Names</h2>
+<button onclick="randomName()">Generate</button>
+<div id="nameResult" class="result"></div>
+</div>
+
+<div class="section">
+<h2>Hadith Reminder</h2>
+<button onclick="randomHadith()">Show Hadith</button>
+<div id="hadithResult" class="result"></div>
+</div>
+
+
+
+<div class="section">
+<h2>Don'ts in Islam</h2>
+<button onclick="randomDont()">Remind Me</button>
+
+<div class="dontContainer">
+
+    <div id="dontResult" class="result"></div>
+
+    <video id="memeVideo" width="220" style="display:none;" controls>
+        <source src="eeee.mp4" type="video/mp4">
+    </video>
+
+</div>
+</div>
+
+<div class="section">
+  <h2>📖 My Ramzan Diary</h2>
+
+  <h3 id="dayLabel">Day 1</h3>
+
+<button onclick="prevDay()">⬅ Previous</button>
+<button onclick="nextDay()">Next ➡</button>
+
+<br><br>
+
+  <textarea id="diaryInput" placeholder="What did I learn today..." rows="4"></textarea>
+  <br><br>
+
+  <button onclick="saveDiary()">Save Entry</button>
+
+  <div id="diaryDisplay" class="result"></div>
+</div>
+
+
+<script>
+
+  let currentDay = 1;
+
+const names = [
+["Ar-Rahman","The Most Merciful"],
+["Ar-Raheem","The Especially Merciful"],
+["Al-Malik","The King and Owner of Dominion"],
+["Al-Quddus","The Absolutely Pure"],
+["As-Salam","The Source of Peace"],
+["Al-Ghaffar","The Constant Forgiver"],
+["Al-Wahhab","The Bestower"],
+["Ar-Razzaq","The Provider"],
+["Al-Aleem","The All Knowing"],
+["Al-Hakeem","The Most Wise"]
+];
+
+function randomName(){
+let n = names[Math.floor(Math.random()*names.length)];
+document.getElementById("nameResult").innerHTML =
+"<b>"+n[0]+"</b><br>"+n[1];
+}
+
+const hadiths = [
+["The best among you are those who have the best manners.","Prophet ﷺ"],
+["Make things easy and do not make them difficult.","Prophet ﷺ"],
+["Smiling at your brother is charity.","Prophet ﷺ"],
+["The strong person is the one who controls anger.","Prophet ﷺ"],
+["Allah loves when one does a job with excellence.","Prophet ﷺ"]
+];
+
+
+function randomHadith(){
+
+let h = hadiths[Math.floor(Math.random()*hadiths.length)];
+
+let formatted = h[0] + "<br><br><i>— " + h[1] + "</i>";
+
+document.getElementById("hadithResult").innerHTML = formatted;
+
+localStorage.setItem("hadith", formatted);
+}
+
+const donts = [
+"Do not lie even as a joke.",
+"Do not waste food.",
+"Do not hurt parents with words.",
+"Do not show off good deeds.",
+"Do not delay prayer intentionally."
+];
+
+function randomDont(){
+let d = donts[Math.floor(Math.random()*donts.length)];
+document.getElementById("dontResult").innerHTML = d;
+
+let video = document.getElementById("memeVideo");
+video.style.display = "block";
+video.currentTime = 0;
+video.play();
+}
+
+function saveDiary(){
+
+    let text = document.getElementById("diaryInput").value;
+
+    localStorage.setItem("day" + currentDay, text);
+
+    document.getElementById("diaryDisplay").innerText = text;
+}
+
+let saved = localStorage.getItem("todayDiary");
+
+if(saved){
+    document.getElementById("diaryDisplay").innerText = saved;
+}
+
+function updateDay(){
+    document.getElementById("dayLabel").innerText = "Day " + currentDay;
+
+    let saved = localStorage.getItem("day" + currentDay);
+
+    if(saved){
+        document.getElementById("diaryDisplay").innerText = saved;
+        document.getElementById("diaryInput").value = saved;
+    }else{
+        document.getElementById("diaryDisplay").innerText = "";
+        document.getElementById("diaryInput").value = "";
+    }
+}
+
+function nextDay(){
+    currentDay++;
+    updateDay();
+}
+
+function prevDay(){
+    if(currentDay>1){
+        currentDay--;
+    }
+    updateDay();
+}
+
+updateDay();
+
+</script>
+
+</body>
+</html>
